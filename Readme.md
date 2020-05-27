@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Исправникова](https://up.htmlacademy.ru/javascript/20/user/1401861).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Железцов](https://up.htmlacademy.ru/javascript/20/user/983299).
 
 ---
 
