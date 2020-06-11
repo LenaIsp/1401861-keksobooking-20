@@ -9,28 +9,26 @@ var NUMBER_OF_PINS = 8;
 var map = document.querySelectorAll('.map__pins');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 
-//Функция гененрации случайного числа от и до
-var makeRandomNumber = function(min, max) {
-  var i = Math.floor(Math.random() * (max-min)) + min;
-  return i
-}
+// Функция гененрации случайного числа от и до
+var makeRandomNumber = function (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
 
-//Функция гененрации случайного элемента в масситве
-var makeRandomElement = function(array) {
-  var i = Math.floor(Math.random() * array.length)
-  var element = array[i]
-  return element
-}
+// Функция гененрации случайного элемента в масситве
+var makeRandomElement = function (array) {
+  var i = Math.floor(Math.random() * array.length);
+  return array[i];
+};
 
-//Функция для создания массива
-var createArray = function() {
+// Функция для создания массива
+var createArray = function () {
   var location = {
     x: makeRandomNumber(0, map[0].offsetWidth - 50),
     y: makeRandomNumber(130, 630)
   };
-  var newArray = {
+  return {
     author: {
-      avatar: 'img/avatars/user0' + makeRandomNumber(1,NUMBER_OF_PINS) + '.png'
+      avatar: 'img/avatars/user0' + makeRandomNumber(1, NUMBER_OF_PINS) + '.png'
     },
     offer: {
       title: makeRandomElement(TITLE),
@@ -47,24 +45,22 @@ var createArray = function() {
     },
     location: location
   };
-  return newArray;
-}
+};
 
-//Функция для генерации меток на карте
-var createMapPins = function() {  
+// Функция для генерации меток на карте
+var createMapPins = function () {
   for (var i = 0; i < NUMBER_OF_PINS; i++) {
-    var obj = createArray()
+    var obj = createArray();
     var mapElement = pin.cloneNode(true);
-    //модификация атрибутов
+    // модификация атрибутов
     mapElement.style.left = obj.location.x + 'px';
     mapElement.style.top = obj.location.y + 'px';
     mapElement.querySelector('img').src = obj.author.avatar;
     mapElement.querySelector('img').alt = obj.offer.title;
-    //добавление метки в div
+    // добавление метки в div
     map[0].appendChild(mapElement);
-    console.log(obj);
   }
-}
+};
 
-//Заполняем блок элементами
+// Заполняем блок элементами
 createMapPins();
