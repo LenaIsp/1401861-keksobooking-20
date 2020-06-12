@@ -1,13 +1,11 @@
 'use strict';
-var TITLE = ['заголовок #1', 'заголовок #2', 'заголовок #3', 'заголовок #4'];
+var TITLE = ['Заголовок #1', 'Заголовок #2', 'Заголовок #3', 'Заголовок #4'];
+var DESCRIPTION = ['Описание #1', 'Описание #2', 'Описание #3', 'Описание #4'];
 var TYPE = ['palace', 'flat', 'bungalo', 'house'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var NUMBER_OF_PINS = 8;
-
-var map = document.querySelectorAll('.map__pins');
-var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Функция гененрации случайного числа от и до
 var makeRandomNumber = function (min, max) {
@@ -32,33 +30,63 @@ var createArray = function () {
     },
     offer: {
       title: makeRandomElement(TITLE),
-      address: location.x + ',' + location.y,
-      price: makeRandomNumber(1000, 50000),
+      address: location.x + ', ' + location.y,
+      price: makeRandomNumber(1000, 5000),
       type: makeRandomElement(TYPE),
       rooms: makeRandomNumber(1, 3),
-      guest: makeRandomNumber(0, 3),
+      guests: makeRandomNumber(0, 3),
       checkin: makeRandomElement(TIMES),
       checkout: makeRandomElement(TIMES),
       features: makeRandomElement(FEATURES),
-      description: makeRandomElement(TITLE),
+      description: makeRandomElement(DESCRIPTION),
       photos: makeRandomElement(PHOTOS)
     },
     location: location
   };
 };
 
+
+var map = document.querySelectorAll('.map__pins');
+var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+var card = document.querySelector('.map__filters-container');
+var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
+var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
 // Функция для генерации меток на карте
 var createMapPins = function () {
   for (var i = 0; i < NUMBER_OF_PINS; i++) {
     var obj = createArray();
     var mapElement = pin.cloneNode(true);
-    // модификация атрибутов
+    var cardElement = cardInfo.cloneNode(true);
+
+    // модификация атрибутов в шаблоне "pin"
     mapElement.style.left = obj.location.x + 'px';
     mapElement.style.top = obj.location.y + 'px';
     mapElement.querySelector('img').src = obj.author.avatar;
     mapElement.querySelector('img').alt = obj.offer.title;
-    // добавление метки в div
+
+    // модификация атрибутов в шаблоне "card"
+    cardInfo.querySelector('.popup__title').innerHTML = obj.offer.title;
+    cardInfo.querySelector('.popup__text--address').innerHTML = obj.offer.address;
+    cardInfo.querySelector('.popup__text--price').innerHTML = obj.offer.price + '₽/ночь';
+    cardInfo.querySelector('.popup__text--capacity').innerHTML = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+    cardInfo.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+    cardInfo.querySelector('.popup__description').innerHTML = obj.offer.description;
+    cardInfo.querySelector('.popup__avatar').src = obj.author.avatar;
+
+    // добавление метки в блок "map__pins"
     map[0].appendChild(mapElement);
+  }
+
+  // создание одного элемента перед блоком "map__filters-container"
+  card.before(cardElement);
+
+  // добавление изображений в шаблоне "card"
+  var blocks = document.querySelectorAll('.popup__photos > img');
+  document.querySelector('.popup__photos').removeChild(blocks[0]);
+  for (var j = 0; j < PHOTOS.length; j++) {
+    var cardPhoto = popupPhoto.cloneNode(true);
+    cardPhoto.src = PHOTOS[j];
+    document.querySelector('.popup__photos').appendChild(cardPhoto);
   }
 };
 
