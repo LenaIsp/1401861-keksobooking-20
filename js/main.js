@@ -24,6 +24,7 @@ var createArray = function () {
     x: makeRandomNumber(0, map[0].offsetWidth - 50),
     y: makeRandomNumber(130, 630)
   };
+  var check = makeRandomElement(TIMES);
   return {
     author: {
       avatar: 'img/avatars/user0' + makeRandomNumber(1, NUMBER_OF_PINS) + '.png'
@@ -35,8 +36,8 @@ var createArray = function () {
       type: makeRandomElement(TYPE),
       rooms: makeRandomNumber(1, 3),
       guests: makeRandomNumber(0, 3),
-      checkin: makeRandomElement(TIMES),
-      checkout: makeRandomElement(TIMES),
+      checkin: check,
+      checkout: check,
       features: makeRandomElement(FEATURES),
       description: makeRandomElement(DESCRIPTION),
       photos: makeRandomElement(PHOTOS)
@@ -52,8 +53,8 @@ var card = document.querySelector('.map__filters-container');
 var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
 var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
 // Функция для генерации меток на карте
-var createMapPins = function () {
-  for (var i = 0; i < NUMBER_OF_PINS; i++) {
+var createMapPins = function (number) {
+  for (var i = 0; i < number; i++) {
     var obj = createArray();
     var mapElement = pin.cloneNode(true);
     var cardElement = cardInfo.cloneNode(true);
@@ -65,19 +66,19 @@ var createMapPins = function () {
     mapElement.querySelector('img').alt = obj.offer.title;
 
     // модификация атрибутов в шаблоне "card"
-    cardInfo.querySelector('.popup__title').innerHTML = obj.offer.title;
+    /*cardInfo.querySelector('.popup__title').innerHTML = obj.offer.title;
     cardInfo.querySelector('.popup__text--address').innerHTML = obj.offer.address;
     cardInfo.querySelector('.popup__text--price').innerHTML = obj.offer.price + '₽/ночь';
     cardInfo.querySelector('.popup__text--capacity').innerHTML = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
     cardInfo.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
     cardInfo.querySelector('.popup__description').innerHTML = obj.offer.description;
-    cardInfo.querySelector('.popup__avatar').src = obj.author.avatar;
+    cardInfo.querySelector('.popup__avatar').src = obj.author.avatar;*/
 
     // добавление метки в блок "map__pins"
     map[0].appendChild(mapElement);
   }
 
-  // создание одного элемента перед блоком "map__filters-container"
+  /*// создание одного элемента перед блоком "map__filters-container"
   card.before(cardElement);
 
   // добавление изображений в шаблоне "card"
@@ -87,8 +88,48 @@ var createMapPins = function () {
     var cardPhoto = popupPhoto.cloneNode(true);
     cardPhoto.src = PHOTOS[j];
     document.querySelector('.popup__photos').appendChild(cardPhoto);
-  }
+  }*/
 };
 
-// Заполняем блок элементами
-createMapPins();
+// Находим элементты для активации
+var buttonPinMain = document.querySelector('.map__pin--main');
+var blockMap = document.querySelector('.map');
+var blockAdForm = document.querySelector('.ad-form ');
+var elementsFieldset = document.querySelectorAll('fieldset');
+var elementsSelect = document.querySelectorAll('select');
+
+//функция удаления и добавлениия атрибута disabled
+var disabledForm = function (x) {
+  if (x == 'add') {
+    for (var i = 0; i < elementsFieldset.length; i++) {
+      elementsFieldset[i].setAttribute('disabled', 'disabled');
+    }
+    for (var i = 0; i < elementsSelect.length; i++) {
+      elementsFieldset[i].setAttribute('disabled', 'disabled');
+    }
+  } if (x == 'remove') {
+    for (var i = 0; i < elementsFieldset.length; i++) {
+      elementsFieldset[i].removeAttribute('disabled');
+    }
+    for (var i = 0; i < elementsSelect.length; i++) {
+      elementsFieldset[i].removeAttribute('disabled');
+    }
+  } else {
+    return false
+  }
+}
+//добавляем атрибуты disabled
+disabledForm('add');
+
+buttonPinMain.addEventListener('mousedown', function () {
+  if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled')) {
+    blockMap.classList.remove('map--faded');
+    blockAdForm.classList.remove('ad-form--disabled');
+    //удаляематрибут атрибуты disabled
+    disabledForm('remove');
+    //// Заполняем блок map элементами
+    createMapPins(NUMBER_OF_PINS);
+  } else {
+    return false
+  }
+});
