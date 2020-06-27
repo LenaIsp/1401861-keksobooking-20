@@ -49,15 +49,15 @@ var createArray = function () {
 
 var map = document.querySelectorAll('.map__pins');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
-var card = document.querySelector('.map__filters-container');
-var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
-var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
+// var card = document.querySelector('.map__filters-container');
+// var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
+// var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
 // Функция для генерации меток на карте
 var createMapPins = function (number) {
   for (var i = 0; i < number; i++) {
     var obj = createArray();
     var mapElement = pin.cloneNode(true);
-    var cardElement = cardInfo.cloneNode(true);
+    // var cardElement = cardInfo.cloneNode(true);
 
     // модификация атрибутов в шаблоне "pin"
     mapElement.style.left = obj.location.x + 'px';
@@ -98,62 +98,88 @@ var blockAdForm = document.querySelector('.ad-form ');
 var elementsFieldset = document.querySelectorAll('fieldset');
 var elementsSelect = document.querySelectorAll('select');
 var elementsAddress = document.querySelector('#address');
+// Элементты для проверки формы
+var selectRoomNumber = document.querySelector('#room_number');
+var selectCapacity = document.querySelector('#capacity');
 
-//функция удаления и добавлениия атрибута disabled
+// функция удаления и добавлениия атрибута disabled
 var disabledForm = function (x) {
-  if (x == 'add') {
+  if (x === 'add') {
     for (var i = 0; i < elementsFieldset.length; i++) {
       elementsFieldset[i].setAttribute('disabled', 'disabled');
     }
-    for (var i = 0; i < elementsSelect.length; i++) {
-      elementsFieldset[i].setAttribute('disabled', 'disabled');
+    for (var j = 0; j < elementsSelect.length; j++) {
+      elementsFieldset[j].setAttribute('disabled', 'disabled');
     }
-  } if (x == 'remove') {
-    for (var i = 0; i < elementsFieldset.length; i++) {
-      elementsFieldset[i].removeAttribute('disabled');
+  } else if (x === 'remove') {
+    for (var n = 0; n < elementsFieldset.length; n++) {
+      elementsFieldset[n].removeAttribute('disabled');
     }
-    for (var i = 0; i < elementsSelect.length; i++) {
-      elementsFieldset[i].removeAttribute('disabled');
+    for (var s = 0; s < elementsSelect.length; s++) {
+      elementsFieldset[s].removeAttribute('disabled');
     }
-  } else {
-    return false
   }
-}
+};
 
-//функция активации карты
-var activePage = function() {
+// функция активации карты
+var activePage = function () {
   blockMap.classList.remove('map--faded');
   blockAdForm.classList.remove('ad-form--disabled');
-  //удаляем атрибуты disabled
+  // удаляем атрибуты disabled
   disabledForm('remove');
-  //Заполняем блок map элементами
+  // Заполняем блок map элементами
   createMapPins(NUMBER_OF_PINS);
-}
+};
 
-//функция определения координат метки
-var addСoordinates = function(map) {
-  //высота псевдоэлемента after
+// функция определения координат метки
+var addСoordinates = function (maps) {
+  // высота псевдоэлемента after
   var pathMap = 16;
-  if (map == 'center') {
-    elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth/2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight/2));
+  if (maps === 'center') {
+    elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth / 2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight / 2));
   } else {
-    elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth/2)) + ', ' +  Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight + pathMap));
+    elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth / 2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight + pathMap));
   }
-}
+};
 
-//добавляем атрибуты disabled при загрузке страницы
+// функция валидации формы
+var validate = function () {
+  var roomNumberValue = Number(selectRoomNumber.value);
+  var capacityValue = Number(selectCapacity.value);
+  if ((capacityValue > roomNumberValue && capacityValue !== 0)) {
+    selectRoomNumber.setCustomValidity('Число гостей не может превышать количество комнат. Выберите другое значение');
+    selectCapacity.setCustomValidity('Число комнат не может быть меньше количества гостей. Выберите другое значение.');
+  } else if ((roomNumberValue === 100 && capacityValue !== 0) || (roomNumberValue !== 100 && capacityValue === 0)) {
+    selectRoomNumber.setCustomValidity('Ошибка: выберите другой тип жилья, либо иное количество гостей');
+    selectCapacity.setCustomValidity('Ошибка: выберите другой тип жилья, либо иное количество гостей');
+  } else {
+    selectRoomNumber.setCustomValidity('');
+    selectCapacity.setCustomValidity('');
+  }
+};
+
+selectRoomNumber.addEventListener('change', function () {
+  validate();
+});
+
+selectCapacity.addEventListener('change', function () {
+  validate();
+});
+
+
+// добавляем атрибуты disabled при загрузке страницы
 disabledForm('add');
 addСoordinates('center');
 
-//При клике активизируется карта
+// При клике активизируется карта
 buttonPinMain.addEventListener('mousedown', function (evt) {
-  if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.buttons == 1)) {
+  if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.buttons === 1)) {
     activePage();
     addСoordinates();
   }
 });
 
-//При нажатии "enter" активизируется карта
+// При нажатии "enter" активизируется карта
 buttonPinMain.addEventListener('keydown', function (evt) {
   if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.key === 'Enter')) {
     activePage();
