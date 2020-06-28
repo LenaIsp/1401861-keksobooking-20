@@ -142,14 +142,14 @@ var addCoordinates = function (maps) {
   }
 };
 
-//проставляем disabled элемепнтам которые указаны в массиве
+// проставляем disabled элемепнтам которые указаны в массиве
 var setDisabledValue = function (elements, values) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].disabled = values.indexOf(elements[i].value) > -1;
   }
 };
 
-//проверяем каким элементам проставить disabled
+// проверяем каким инпутам проставить disabled и выбор нужного инпута
 var calculateRoomsAndCapacity = function () {
   var capacityInputSelect = userForm.querySelectorAll('select[name="capacity"] option');
   var roomsInputValue = roomsInputElement.value;
@@ -174,7 +174,6 @@ var calculateRoomsAndCapacity = function () {
   }
 };
 
-
 // добавляем атрибуты disabled при загрузке страницы
 disabledForm('add');
 addCoordinates('center');
@@ -195,7 +194,7 @@ buttonPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-//Изменение элементов в инпуте "количество комнат"
+// Изменение элементов в инпуте "количество комнат" при нажатии
 roomsInputElement.addEventListener('change', function () {
   calculateRoomsAndCapacity();
 });
