@@ -99,8 +99,8 @@ var elementsFieldset = document.querySelectorAll('fieldset');
 var elementsSelect = document.querySelectorAll('select');
 var elementsAddress = document.querySelector('#address');
 // Элементты для проверки формы
-var selectRoomNumber = document.querySelector('#room_number');
-var selectCapacity = document.querySelector('#capacity');
+var userForm = document.querySelector('.ad-form');
+var roomsInputElement = userForm.querySelector('select[name="rooms"]');
 
 // функция удаления и добавлениия атрибута disabled
 var disabledForm = function (x) {
@@ -132,7 +132,7 @@ var activePage = function () {
 };
 
 // функция определения координат метки
-var addСoordinates = function (maps) {
+var addCoordinates = function (maps) {
   // высота псевдоэлемента after
   var pathMap = 16;
   if (maps === 'center') {
@@ -142,40 +142,48 @@ var addСoordinates = function (maps) {
   }
 };
 
-// функция валидации формы
-var validate = function () {
-  var roomNumberValue = Number(selectRoomNumber.value);
-  var capacityValue = Number(selectCapacity.value);
-  if ((capacityValue > roomNumberValue && capacityValue !== 0)) {
-    selectRoomNumber.setCustomValidity('Число гостей не может превышать количество комнат. Выберите другое значение');
-    selectCapacity.setCustomValidity('Число комнат не может быть меньше количества гостей. Выберите другое значение.');
-  } else if ((roomNumberValue === 100 && capacityValue !== 0) || (roomNumberValue !== 100 && capacityValue === 0)) {
-    selectRoomNumber.setCustomValidity('Ошибка: выберите другой тип жилья, либо иное количество гостей');
-    selectCapacity.setCustomValidity('Ошибка: выберите другой тип жилья, либо иное количество гостей');
-  } else {
-    selectRoomNumber.setCustomValidity('');
-    selectCapacity.setCustomValidity('');
+//проставляем disabled элемепнтам которые указаны в массиве
+var setDisabledValue = function (elements, values) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].disabled = values.indexOf(elements[i].value) > -1;
   }
 };
 
-selectRoomNumber.addEventListener('change', function () {
-  validate();
-});
-
-selectCapacity.addEventListener('change', function () {
-  validate();
-});
+//проверяем каким элементам проставить disabled
+var calculateRoomsAndCapacity = function () {
+  var capacityInputSelect = userForm.querySelectorAll('select[name="capacity"] option');
+  var roomsInputValue = roomsInputElement.value;
+  
+  switch (roomsInputValue) {
+    case '1':
+      setDisabledValue(capacityInputSelect, ['0', '2', '3']);
+      capacityInputSelect[2].selected = true;
+      break;
+    case '2':
+      setDisabledValue(capacityInputSelect, ['0', '3']);
+      capacityInputSelect[1].selected = true;
+      break;
+    case '3':
+      setDisabledValue(capacityInputSelect, ['0']);
+      capacityInputSelect[2].selected = true;
+      break;
+    case '100':
+      setDisabledValue(capacityInputSelect, ['1', '2', '3']);
+      capacityInputSelect[3].selected = true;
+      break;
+  }
+};
 
 
 // добавляем атрибуты disabled при загрузке страницы
 disabledForm('add');
-addСoordinates('center');
+addCoordinates('center');
 
 // При клике активизируется карта
 buttonPinMain.addEventListener('mousedown', function (evt) {
   if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.buttons === 1)) {
     activePage();
-    addСoordinates();
+    addCoordinates();
   }
 });
 
@@ -183,6 +191,11 @@ buttonPinMain.addEventListener('mousedown', function (evt) {
 buttonPinMain.addEventListener('keydown', function (evt) {
   if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.key === 'Enter')) {
     activePage();
-    addСoordinates();
+    addCoordinates();
   }
+});
+
+//Изменение элементов в инпуте "количество комнат"
+roomsInputElement.addEventListener('change', function () {
+  calculateRoomsAndCapacity();
 });
