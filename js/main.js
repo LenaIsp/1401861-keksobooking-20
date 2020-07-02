@@ -29,6 +29,7 @@ var createArray = function () {
     author: {
       avatar: 'img/avatars/user0' + makeRandomNumber(1, NUMBER_OF_PINS) + '.png'
     },
+    photos: PHOTOS,
     offer: {
       title: makeRandomElement(TITLE),
       address: location.x + ', ' + location.y,
@@ -40,7 +41,6 @@ var createArray = function () {
       checkout: check,
       features: makeRandomElement(FEATURES),
       description: makeRandomElement(DESCRIPTION),
-      photos: makeRandomElement(PHOTOS)
     },
     location: location
   };
@@ -49,50 +49,57 @@ var createArray = function () {
 
 var map = document.querySelectorAll('.map__pins');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
-// var card = document.querySelector('.map__filters-container');
-// var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
-// var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
+var card = document.querySelector('.map__filters-container');
+var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
+var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
 // Функция для генерации меток на карте
 var createMapPins = function (number) {
   for (var i = 0; i < number; i++) {
     var obj = createArray();
     var mapElement = pin.cloneNode(true);
-    // var cardElement = cardInfo.cloneNode(true);
+    var cardElement = cardInfo.cloneNode(true);
 
     // модификация атрибутов в шаблоне "pin"
     mapElement.style.left = obj.location.x + 'px';
     mapElement.style.top = obj.location.y + 'px';
     mapElement.querySelector('img').src = obj.author.avatar;
     mapElement.querySelector('img').alt = obj.offer.title;
+    mapElement.style.opacity = 0;
+    mapElement.style.zIndex = '-1';
 
     // модификация атрибутов в шаблоне "card"
-    /*cardInfo.querySelector('.popup__title').innerHTML = obj.offer.title;
-    cardInfo.querySelector('.popup__text--address').innerHTML = obj.offer.address;
-    cardInfo.querySelector('.popup__text--price').innerHTML = obj.offer.price + '₽/ночь';
-    cardInfo.querySelector('.popup__text--capacity').innerHTML = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
-    cardInfo.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
-    cardInfo.querySelector('.popup__description').innerHTML = obj.offer.description;
-    cardInfo.querySelector('.popup__avatar').src = obj.author.avatar;*/
-
+    cardElement.querySelector('.popup__title').innerHTML = obj.offer.title;
+    cardElement.querySelector('.popup__text--address').innerHTML = obj.offer.address;
+    cardElement.querySelector('.popup__text--price').innerHTML = obj.offer.price + '₽/ночь';
+    cardElement.querySelector('.popup__text--capacity').innerHTML = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+    cardElement.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+    cardElement.querySelector('.popup__description').innerHTML = obj.offer.description;
+    cardElement.querySelector('.popup__avatar').src = obj.author.avatar;
+    cardElement.style.opacity = 0;
+    cardElement.style.zIndex = '-1';
+    // находим фото 
+    var blocks = cardElement.querySelectorAll('.popup__photos > img');
+    // удаляем ненужное фото
+    cardElement.querySelector('.popup__photos').removeChild(blocks[0]);
+    // заполняем фотографиями из массива
+    for (var j = 0; j < obj.photos.length; j++) {
+      var cardPhoto = popupPhoto.cloneNode(true);
+      cardPhoto.src = obj.photos[j];
+      cardElement.querySelector('.popup__photos').appendChild(cardPhoto);
+    }
     // добавление метки в блок "map__pins"
     map[0].appendChild(mapElement);
+
+    // создание 8 карточек перед блоком "map__filters-container"
+    card.before(cardElement);
   }
-
-  /*// создание одного элемента перед блоком "map__filters-container"
-  card.before(cardElement);
-
-  // добавление изображений в шаблоне "card"
-  var blocks = document.querySelectorAll('.popup__photos > img');
-  document.querySelector('.popup__photos').removeChild(blocks[0]);
-  for (var j = 0; j < PHOTOS.length; j++) {
-    var cardPhoto = popupPhoto.cloneNode(true);
-    cardPhoto.src = PHOTOS[j];
-    document.querySelector('.popup__photos').appendChild(cardPhoto);
-  }*/
 };
+// создаем элементы при загрузке страницы атрибуты disabled при загрузке страницы
+createMapPins(NUMBER_OF_PINS);
 
 // Находим элементты для активации
 var buttonPinMain = document.querySelector('.map__pin--main');
+var buttonThumbnails = document.querySelectorAll('.map__pin');
 var blockMap = document.querySelector('.map');
 var blockAdForm = document.querySelector('.ad-form ');
 var elementsFieldset = document.querySelectorAll('fieldset');
@@ -120,7 +127,6 @@ var disabledForm = function (x) {
     }
   }
 };
-
 // функция активации карты
 var activePage = function () {
   blockMap.classList.remove('map--faded');
@@ -128,7 +134,10 @@ var activePage = function () {
   // удаляем атрибуты disabled
   disabledForm('remove');
   // Заполняем блок map элементами
-  createMapPins(NUMBER_OF_PINS);
+  for (var i = 0; i < buttonThumbnails.length; i++) {
+    buttonThumbnails[i].style.opacity = 1;
+    buttonThumbnails[i].style.zIndex = 1;
+  }
 };
 
 // функция определения координат метки
@@ -173,7 +182,6 @@ var calculateRoomsAndCapacity = function () {
       break;
   }
 };
-
 // добавляем атрибуты disabled при загрузке страницы
 disabledForm('add');
 addCoordinates('center');
@@ -198,3 +206,19 @@ buttonPinMain.addEventListener('keydown', function (evt) {
 roomsInputElement.addEventListener('change', function () {
   calculateRoomsAndCapacity();
 });
+
+
+// Открытие карточки любого элемента
+var buttonThumbnails = document.querySelectorAll('.map__pin');
+var cardThumbnails = document.querySelectorAll('.map__card');
+//Замыкания
+var openCard = function (button, card) {
+  button.addEventListener('click', function () {
+    card.style.opacity = 1;
+    card.style.zIndex = 1;
+  });
+};
+
+for (var i = 1; i < buttonThumbnails.length; i++) {
+  openCard(buttonThumbnails[i], cardThumbnails[i-1]);
+}
