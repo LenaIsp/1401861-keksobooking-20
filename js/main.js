@@ -64,8 +64,7 @@ var createMapPins = function (number) {
     mapElement.style.top = obj.location.y + 'px';
     mapElement.querySelector('img').src = obj.author.avatar;
     mapElement.querySelector('img').alt = obj.offer.title;
-    mapElement.style.opacity = 0;
-    mapElement.style.zIndex = '-1';
+    mapElement.style.display = 'none';
 
     // модификация атрибутов в шаблоне "card"
     cardElement.querySelector('.popup__title').innerHTML = obj.offer.title;
@@ -75,8 +74,7 @@ var createMapPins = function (number) {
     cardElement.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
     cardElement.querySelector('.popup__description').innerHTML = obj.offer.description;
     cardElement.querySelector('.popup__avatar').src = obj.author.avatar;
-    cardElement.style.opacity = 0;
-    cardElement.style.zIndex = '-1';
+    cardElement.style.display = 'none';
     // находим фото 
     var blocks = cardElement.querySelectorAll('.popup__photos > img');
     // удаляем ненужное фото
@@ -108,6 +106,8 @@ var elementsAddress = document.querySelector('#address');
 // Элементты для проверки формы
 var userForm = document.querySelector('.ad-form');
 var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+var timeinInputElement = userForm.querySelector('select[name="timein"]');
+var timeoutInputElement = userForm.querySelector('select[name="timeout"]');
 
 // функция удаления и добавлениия атрибута disabled
 var disabledForm = function (x) {
@@ -135,8 +135,7 @@ var activePage = function () {
   disabledForm('remove');
   // Заполняем блок map элементами
   for (var i = 0; i < buttonThumbnails.length; i++) {
-    buttonThumbnails[i].style.opacity = 1;
-    buttonThumbnails[i].style.zIndex = 1;
+    buttonThumbnails[i].style.display = 'block';
   }
 };
 
@@ -182,6 +181,8 @@ var calculateRoomsAndCapacity = function () {
       break;
   }
 };
+
+
 // добавляем атрибуты disabled при загрузке страницы
 disabledForm('add');
 addCoordinates('center');
@@ -206,19 +207,67 @@ buttonPinMain.addEventListener('keydown', function (evt) {
 roomsInputElement.addEventListener('change', function () {
   calculateRoomsAndCapacity();
 });
+var changeTime = function (timein, timeout) {
+  var valueElement = timein.value;
+  var timeOption = timeout.querySelectorAll('option');  
+  switch (valueElement) {
+    case '12:00':
+      timeOption[0].selected = true;
+      break;
+    case '13:00':
+      timeOption[1].selected = true;
+      break;
+    case '14:00':
+      timeOption[2].selected = true;
+      break;
+  }
+};
 
+// Изменение элементов в инпуте "Время заезда и выезда" при нажатии
+timeinInputElement.addEventListener('change', function () {
+  changeTime(timeinInputElement, timeoutInputElement);
+});
+timeoutInputElement.addEventListener('change', function () {
+  changeTime(timeoutInputElement, timeinInputElement);
+});
 
-// Открытие карточки любого элемента
+// Элементы для закрытия и открытия карточек
 var buttonThumbnails = document.querySelectorAll('.map__pin');
 var cardThumbnails = document.querySelectorAll('.map__card');
-//Замыкания
+var popupClose = document.querySelectorAll('.popup__close');
+
+// позже разобраться с удалением обработчиков событий и делегированием - лекция 4
+// Открытие карточки
 var openCard = function (button, card) {
   button.addEventListener('click', function () {
-    card.style.opacity = 1;
-    card.style.zIndex = 1;
+    for (var i = 0; i < cardThumbnails.length; i++) {
+      cardThumbnails[i].style.display = 'none';
+    }
+    card.style.display = 'block';
+    //закрытие по клавиши Esc
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        for (var i = 0; i < cardThumbnails.length; i++) {
+          cardThumbnails[i].style.display = 'none';
+        }
+      }
+    });
+  });
+};
+
+// Закрытие карточки
+var closeCard = function (button, card) {
+  button.addEventListener('click', function () {
+    card.style.display = 'none';
   });
 };
 
 for (var i = 1; i < buttonThumbnails.length; i++) {
   openCard(buttonThumbnails[i], cardThumbnails[i-1]);
 }
+
+for (var i = 0; i < popupClose.length; i++) {
+  closeCard(popupClose[i], cardThumbnails[i]);
+}
+
