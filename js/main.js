@@ -75,7 +75,7 @@ var createMapPins = function (number) {
     cardElement.querySelector('.popup__description').innerHTML = obj.offer.description;
     cardElement.querySelector('.popup__avatar').src = obj.author.avatar;
     cardElement.style.display = 'none';
-    // находим фото 
+    // находим фото
     var blocks = cardElement.querySelectorAll('.popup__photos > img');
     // удаляем ненужное фото
     cardElement.querySelector('.popup__photos').removeChild(blocks[0]);
@@ -161,7 +161,6 @@ var setDisabledValue = function (elements, values) {
 var calculateRoomsAndCapacity = function () {
   var capacityInputSelect = userForm.querySelectorAll('select[name="capacity"] option');
   var roomsInputValue = roomsInputElement.value;
-  
   switch (roomsInputValue) {
     case '1':
       setDisabledValue(capacityInputSelect, ['0', '2', '3']);
@@ -207,9 +206,11 @@ buttonPinMain.addEventListener('keydown', function (evt) {
 roomsInputElement.addEventListener('change', function () {
   calculateRoomsAndCapacity();
 });
+
+// Изменение элементов в инпуте "Время заезда и выезда" при нажатии
 var changeTime = function (timein, timeout) {
   var valueElement = timein.value;
-  var timeOption = timeout.querySelectorAll('option');  
+  var timeOption = timeout.querySelectorAll('option');
   switch (valueElement) {
     case '12:00':
       timeOption[0].selected = true;
@@ -222,8 +223,6 @@ var changeTime = function (timein, timeout) {
       break;
   }
 };
-
-// Изменение элементов в инпуте "Время заезда и выезда" при нажатии
 timeinInputElement.addEventListener('change', function () {
   changeTime(timeinInputElement, timeoutInputElement);
 });
@@ -232,24 +231,23 @@ timeoutInputElement.addEventListener('change', function () {
 });
 
 // Элементы для закрытия и открытия карточек
-var buttonThumbnails = document.querySelectorAll('.map__pin');
 var cardThumbnails = document.querySelectorAll('.map__card');
 var popupClose = document.querySelectorAll('.popup__close');
 
 // позже разобраться с удалением обработчиков событий и делегированием - лекция 4
 // Открытие карточки
-var openCard = function (button, card) {
+var openCard = function (button, cards) {
   button.addEventListener('click', function () {
     for (var i = 0; i < cardThumbnails.length; i++) {
       cardThumbnails[i].style.display = 'none';
     }
-    card.style.display = 'block';
-    //закрытие по клавиши Esc
+    cards.style.display = 'block';
+    // закрытие по клавиши Esc
     document.addEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
         evt.preventDefault();
-        for (var i = 0; i < cardThumbnails.length; i++) {
-          cardThumbnails[i].style.display = 'none';
+        for (var j = 0; j < cardThumbnails.length; j++) {
+          cardThumbnails[j].style.display = 'none';
         }
       }
     });
@@ -257,17 +255,17 @@ var openCard = function (button, card) {
 };
 
 // Закрытие карточки
-var closeCard = function (button, card) {
-  button.addEventListener('click', function () {
-    card.style.display = 'none';
+var closeCard = function (buttonClose, cardClose) {
+  buttonClose.addEventListener('click', function () {
+    cardClose.style.display = 'none';
   });
 };
 
 for (var i = 1; i < buttonThumbnails.length; i++) {
-  openCard(buttonThumbnails[i], cardThumbnails[i-1]);
+  openCard(buttonThumbnails[i], cardThumbnails[i - 1]);
 }
 
-for (var i = 0; i < popupClose.length; i++) {
-  closeCard(popupClose[i], cardThumbnails[i]);
+for (var j = 0; j < popupClose.length; j++) {
+  closeCard(popupClose[j], cardThumbnails[j]);
 }
 
