@@ -234,8 +234,16 @@ timeoutInputElement.addEventListener('change', function () {
 var cardThumbnails = document.querySelectorAll('.map__card');
 var popupClose = document.querySelectorAll('.popup__close');
 
-// позже разобраться с удалением обработчиков событий и делегированием - лекция 4
 // Открытие карточки
+var onPopupEscPress = function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    for (var j = 0; j < cardThumbnails.length; j++) {
+      cardThumbnails[j].style.display = 'none';
+    }
+  }
+};
+
 var openCard = function (button, cards) {
   button.addEventListener('click', function () {
     for (var i = 0; i < cardThumbnails.length; i++) {
@@ -243,14 +251,7 @@ var openCard = function (button, cards) {
     }
     cards.style.display = 'block';
     // закрытие по клавиши Esc
-    document.addEventListener('keydown', function (evt) {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        for (var j = 0; j < cardThumbnails.length; j++) {
-          cardThumbnails[j].style.display = 'none';
-        }
-      }
-    });
+    document.addEventListener('keydown', onPopupEscPress);
   });
 };
 
@@ -258,6 +259,8 @@ var openCard = function (button, cards) {
 var closeCard = function (buttonClose, cardClose) {
   buttonClose.addEventListener('click', function () {
     cardClose.style.display = 'none';
+    // удаление обработчика Esc
+    document.removeEventListener('keydown', onPopupEscPress);
   });
 };
 
