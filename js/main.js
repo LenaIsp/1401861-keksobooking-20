@@ -29,6 +29,7 @@ var createArray = function () {
     author: {
       avatar: 'img/avatars/user0' + makeRandomNumber(1, NUMBER_OF_PINS) + '.png'
     },
+    photos: PHOTOS,
     offer: {
       title: makeRandomElement(TITLE),
       address: location.x + ', ' + location.y,
@@ -40,7 +41,6 @@ var createArray = function () {
       checkout: check,
       features: makeRandomElement(FEATURES),
       description: makeRandomElement(DESCRIPTION),
-      photos: makeRandomElement(PHOTOS)
     },
     location: location
   };
@@ -49,50 +49,55 @@ var createArray = function () {
 
 var map = document.querySelectorAll('.map__pins');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
-// var card = document.querySelector('.map__filters-container');
-// var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
-// var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
+var card = document.querySelector('.map__filters-container');
+var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
+var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
 // Функция для генерации меток на карте
 var createMapPins = function (number) {
   for (var i = 0; i < number; i++) {
     var obj = createArray();
     var mapElement = pin.cloneNode(true);
-    // var cardElement = cardInfo.cloneNode(true);
+    var cardElement = cardInfo.cloneNode(true);
 
     // модификация атрибутов в шаблоне "pin"
     mapElement.style.left = obj.location.x + 'px';
     mapElement.style.top = obj.location.y + 'px';
     mapElement.querySelector('img').src = obj.author.avatar;
     mapElement.querySelector('img').alt = obj.offer.title;
+    mapElement.style.display = 'none';
 
     // модификация атрибутов в шаблоне "card"
-    /*cardInfo.querySelector('.popup__title').innerHTML = obj.offer.title;
-    cardInfo.querySelector('.popup__text--address').innerHTML = obj.offer.address;
-    cardInfo.querySelector('.popup__text--price').innerHTML = obj.offer.price + '₽/ночь';
-    cardInfo.querySelector('.popup__text--capacity').innerHTML = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
-    cardInfo.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
-    cardInfo.querySelector('.popup__description').innerHTML = obj.offer.description;
-    cardInfo.querySelector('.popup__avatar').src = obj.author.avatar;*/
-
+    cardElement.querySelector('.popup__title').innerHTML = obj.offer.title;
+    cardElement.querySelector('.popup__text--address').innerHTML = obj.offer.address;
+    cardElement.querySelector('.popup__text--price').innerHTML = obj.offer.price + '₽/ночь';
+    cardElement.querySelector('.popup__text--capacity').innerHTML = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+    cardElement.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+    cardElement.querySelector('.popup__description').innerHTML = obj.offer.description;
+    cardElement.querySelector('.popup__avatar').src = obj.author.avatar;
+    cardElement.style.display = 'none';
+    // находим фото
+    var blocks = cardElement.querySelectorAll('.popup__photos > img');
+    // удаляем ненужное фото
+    cardElement.querySelector('.popup__photos').removeChild(blocks[0]);
+    // заполняем фотографиями из массива
+    for (var j = 0; j < obj.photos.length; j++) {
+      var cardPhoto = popupPhoto.cloneNode(true);
+      cardPhoto.src = obj.photos[j];
+      cardElement.querySelector('.popup__photos').appendChild(cardPhoto);
+    }
     // добавление метки в блок "map__pins"
     map[0].appendChild(mapElement);
+
+    // создание 8 карточек перед блоком "map__filters-container"
+    card.before(cardElement);
   }
-
-  /*// создание одного элемента перед блоком "map__filters-container"
-  card.before(cardElement);
-
-  // добавление изображений в шаблоне "card"
-  var blocks = document.querySelectorAll('.popup__photos > img');
-  document.querySelector('.popup__photos').removeChild(blocks[0]);
-  for (var j = 0; j < PHOTOS.length; j++) {
-    var cardPhoto = popupPhoto.cloneNode(true);
-    cardPhoto.src = PHOTOS[j];
-    document.querySelector('.popup__photos').appendChild(cardPhoto);
-  }*/
 };
+// создаем элементы при загрузке страницы атрибуты disabled при загрузке страницы
+createMapPins(NUMBER_OF_PINS);
 
 // Находим элементты для активации
 var buttonPinMain = document.querySelector('.map__pin--main');
+var buttonThumbnails = document.querySelectorAll('.map__pin');
 var blockMap = document.querySelector('.map');
 var blockAdForm = document.querySelector('.ad-form ');
 var elementsFieldset = document.querySelectorAll('fieldset');
@@ -101,6 +106,8 @@ var elementsAddress = document.querySelector('#address');
 // Элементты для проверки формы
 var userForm = document.querySelector('.ad-form');
 var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+var timeinInputElement = userForm.querySelector('select[name="timein"]');
+var timeoutInputElement = userForm.querySelector('select[name="timeout"]');
 
 // функция удаления и добавлениия атрибута disabled
 var disabledForm = function (x) {
@@ -120,7 +127,6 @@ var disabledForm = function (x) {
     }
   }
 };
-
 // функция активации карты
 var activePage = function () {
   blockMap.classList.remove('map--faded');
@@ -128,7 +134,9 @@ var activePage = function () {
   // удаляем атрибуты disabled
   disabledForm('remove');
   // Заполняем блок map элементами
-  createMapPins(NUMBER_OF_PINS);
+  for (var i = 0; i < buttonThumbnails.length; i++) {
+    buttonThumbnails[i].style.display = 'block';
+  }
 };
 
 // функция определения координат метки
@@ -153,7 +161,6 @@ var setDisabledValue = function (elements, values) {
 var calculateRoomsAndCapacity = function () {
   var capacityInputSelect = userForm.querySelectorAll('select[name="capacity"] option');
   var roomsInputValue = roomsInputElement.value;
-  
   switch (roomsInputValue) {
     case '1':
       setDisabledValue(capacityInputSelect, ['0', '2', '3']);
@@ -173,6 +180,7 @@ var calculateRoomsAndCapacity = function () {
       break;
   }
 };
+
 
 // добавляем атрибуты disabled при загрузке страницы
 disabledForm('add');
@@ -198,3 +206,69 @@ buttonPinMain.addEventListener('keydown', function (evt) {
 roomsInputElement.addEventListener('change', function () {
   calculateRoomsAndCapacity();
 });
+
+// Изменение элементов в инпуте "Время заезда и выезда" при нажатии
+var changeTime = function (timein, timeout) {
+  var valueElement = timein.value;
+  var timeOption = timeout.querySelectorAll('option');
+  switch (valueElement) {
+    case '12:00':
+      timeOption[0].selected = true;
+      break;
+    case '13:00':
+      timeOption[1].selected = true;
+      break;
+    case '14:00':
+      timeOption[2].selected = true;
+      break;
+  }
+};
+timeinInputElement.addEventListener('change', function () {
+  changeTime(timeinInputElement, timeoutInputElement);
+});
+timeoutInputElement.addEventListener('change', function () {
+  changeTime(timeoutInputElement, timeinInputElement);
+});
+
+// Элементы для закрытия и открытия карточек
+var cardThumbnails = document.querySelectorAll('.map__card');
+var popupClose = document.querySelectorAll('.popup__close');
+
+// Открытие карточки
+var onPopupEscPress = function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    for (var j = 0; j < cardThumbnails.length; j++) {
+      cardThumbnails[j].style.display = 'none';
+    }
+  }
+};
+
+var openCard = function (button, cards) {
+  button.addEventListener('click', function () {
+    for (var i = 0; i < cardThumbnails.length; i++) {
+      cardThumbnails[i].style.display = 'none';
+    }
+    cards.style.display = 'block';
+    // закрытие по клавиши Esc
+    document.addEventListener('keydown', onPopupEscPress);
+  });
+};
+
+// Закрытие карточки
+var closeCard = function (buttonClose, cardClose) {
+  buttonClose.addEventListener('click', function () {
+    cardClose.style.display = 'none';
+    // удаление обработчика Esc
+    document.removeEventListener('keydown', onPopupEscPress);
+  });
+};
+
+for (var i = 1; i < buttonThumbnails.length; i++) {
+  openCard(buttonThumbnails[i], cardThumbnails[i - 1]);
+}
+
+for (var j = 0; j < popupClose.length; j++) {
+  closeCard(popupClose[j], cardThumbnails[j]);
+}
+
