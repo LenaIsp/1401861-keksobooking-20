@@ -1,25 +1,24 @@
 'use strict';
 (function () {
-  // элементы 
+  // элементы
   var map = document.querySelectorAll('.map__pins');
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var card = document.querySelector('.map__filters-container');
   var cardInfo = document.querySelector('#card').content.querySelector('.map__card');
   var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photos > img');
-  // Функция для генерации меток на карте
+
+  // Функция для генерации меток и карточек на карте
   var createMapPins = function (number) {
     for (var i = 0; i < number; i++) {
       var obj = window.data.createArray();
       var mapElement = pin.cloneNode(true);
       var cardElement = cardInfo.cloneNode(true);
-
       // модификация атрибутов в шаблоне "pin"
       mapElement.style.left = obj.location.x + 'px';
       mapElement.style.top = obj.location.y + 'px';
       mapElement.querySelector('img').src = obj.author.avatar;
       mapElement.querySelector('img').alt = obj.offer.title;
       mapElement.style.display = 'none';
-
       // модификация атрибутов в шаблоне "card"
       cardElement.querySelector('.popup__title').innerHTML = obj.offer.title;
       cardElement.querySelector('.popup__text--address').innerHTML = obj.offer.address;
@@ -41,11 +40,11 @@
       }
       // добавление метки в блок "map__pins"
       map[0].appendChild(mapElement);
-
-      // создание 8 карточек перед блоком "map__filters-container"
+      // добавление карточи перед блоком "map__filters-container"
       card.before(cardElement);
     }
   };
+
   // создаем элементы при загрузке страницы с атрибутом disabled
-  createMapPins(window.data.NUMBER_OF_PINS);
+  createMapPins(window.main.NUMBER_OF_PINS);
 })();

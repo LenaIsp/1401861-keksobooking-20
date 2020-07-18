@@ -6,7 +6,6 @@
   var TIMES = ['12:00', '13:00', '14:00'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  var NUMBER_OF_PINS = 8;
 
   // Функция гененрации случайного числа от и до
   var makeRandomNumber = function (min, max) {
@@ -19,9 +18,8 @@
     return array[i];
   };
 
-  //доступ к переменным и функции из любого файла
+  // доступ к функции из любого файла
   window.data = {
-    NUMBER_OF_PINS: NUMBER_OF_PINS,
     // Функция для создания массива
     createArray: function () {
       var location = {
@@ -31,7 +29,7 @@
       var check = makeRandomElement(TIMES);
       return {
         author: {
-          avatar: 'img/avatars/user0' + makeRandomNumber(1, NUMBER_OF_PINS) + '.png'
+          avatar: 'img/avatars/user0' + makeRandomNumber(1, window.main.NUMBER_OF_PINS) + '.png'
         },
         photos: PHOTOS,
         offer: {
