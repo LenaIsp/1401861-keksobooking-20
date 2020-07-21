@@ -2,9 +2,9 @@
 (function () {
   // Находим элементты для активации
   var buttonPinMain = document.querySelector('.map__pin--main');
-  var buttonThumbnails = document.querySelectorAll('.map__pin');
   var blockMap = document.querySelector('.map');
   var blockAdForm = document.querySelector('.ad-form ');
+
   var elementsFieldset = document.querySelectorAll('fieldset');
   var elementsSelect = document.querySelectorAll('select');
   var elementsAddress = document.querySelector('#address');
@@ -28,18 +28,6 @@
     }
   };
 
-  // функция активации карты
-  var activePage = function () {
-    blockMap.classList.remove('map--faded');
-    blockAdForm.classList.remove('ad-form--disabled');
-    // удаляем атрибуты disabled
-    disabledForm('remove');
-    // Заполняем блок map элементами
-    for (var i = 0; i < buttonThumbnails.length; i++) {
-      buttonThumbnails[i].style.display = 'block';
-    }
-  };
-
   // функция определения координат метки
   var addCoordinates = function (maps) {
     // высота псевдоэлемента after
@@ -50,26 +38,22 @@
       elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth / 2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight + pathMap));
     }
   };
-  // добавляем атрибуты disabled при загрузке страницы
-  disabledForm('add');
-  addCoordinates('center');
 
-  // При клике активизируется карта
-  buttonPinMain.addEventListener('mousedown', function (evt) {
-    if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.buttons === 1)) {
-      activePage();
-      addCoordinates();
+  // функция активации карты
+  var activePage = function (elem) {
+    blockMap.classList.remove('map--faded');
+    blockAdForm.classList.remove('ad-form--disabled');
+    // удаляем атрибуты disabled
+    disabledForm('remove');
+    // Заполняем блок map элементами
+    for (var i = 0; i < elem.length; i++) {
+      elem[i].style.display = 'block';
     }
-  });
+  };
 
-  // При нажатии "enter" активизируется карта
-  buttonPinMain.addEventListener('keydown', function (evt) {
-    if (blockMap.classList.contains('map--faded') && blockAdForm.classList.contains('ad-form--disabled') && (evt.key === 'Enter')) {
-      activePage();
-      addCoordinates();
-    }
-  });
   window.map = {
-    buttonThumbnails: buttonThumbnails
+    addCoordinates: addCoordinates,
+    activePage: activePage,
+    disabledForm: disabledForm,
   };
 })();
