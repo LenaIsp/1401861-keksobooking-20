@@ -2,7 +2,7 @@
 (function () {
   var TIMEOUT = 100000;
   var Url = {
-    LOAD: 'https://javascript.pages.academy/keksobooking/data',
+    LOAD: 'https://javascript.pages.academy/keksobooking/data2',
     SAVE: 'https://javascript.pages.academy/keksobooking'
   };
   var StatusCode = {
