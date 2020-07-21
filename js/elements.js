@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   // элементы
+  var NUMBER_OF_PINS = 8;
   var map = document.querySelectorAll('.map__pins');
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var card = document.querySelector('.map__filters-container');
@@ -9,7 +10,7 @@
 
   var createMapPins = function (number) {
     // Функция для генерации меток и карточек на карте
-    for (var i = 0; i < window.main.NUMBER_OF_PINS; i++) {
+    for (var i = 0; i < NUMBER_OF_PINS; i++) {
       var mapElement = pin.cloneNode(true);
       var cardElement = cardInfo.cloneNode(true);
       // модификация атрибутов в шаблоне "pin"
@@ -43,6 +44,7 @@
       card.before(cardElement);
     }
   };
+
   window.elements = {
     createMapPins: createMapPins
   };
