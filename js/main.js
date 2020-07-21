@@ -3,9 +3,6 @@
   var buttonPinMain = document.querySelector('.map__pin--main');
   var blockMap = document.querySelector('.map');
   var blockAdForm = document.querySelector('.ad-form ');
-  // Элементы для закрытия и открытия карточек
-  var cardThumbnails = document.querySelectorAll('.map__card');
-  var popupClose = document.querySelectorAll('.popup__close');
 
   var onError = function (message) {
     console.error(message);
@@ -17,6 +14,10 @@
     // нахождение элементов для активации
     var buttonThumbnails = document.querySelectorAll('.map__pin');
     window.map.activePage(buttonThumbnails);
+
+    // Элементы для закрытия и открытия карточек
+    var cardThumbnails = document.querySelectorAll('.map__card');
+    var popupClose = document.querySelectorAll('.popup__close');
 
     // Открытие карточки
     var onPopupEscPress = function (evt) {
