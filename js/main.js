@@ -5,7 +5,7 @@
   var blockAdForm = document.querySelector('.ad-form ');
 
   var onError = function (message) {
-  	var error = document.querySelector('#error').content.querySelector('.error');
+    var error = document.querySelector('#error').content.querySelector('.error');
     var cloneError = error.cloneNode(true);
     cloneError.querySelector('.error__message').innerHTML = message;
     cloneError.querySelector('.error__button').remove();
