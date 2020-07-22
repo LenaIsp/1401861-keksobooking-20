@@ -3,7 +3,7 @@
   // Находим элементты для активации
   var buttonPinMain = document.querySelector('.map__pin--main');
   var blockMap = document.querySelector('.map');
-  var blockAdForm = document.querySelector('.ad-form ');
+  var form = document.querySelector('.ad-form');
 
   var elementsFieldset = document.querySelectorAll('fieldset');
   var elementsSelect = document.querySelectorAll('select');
@@ -40,14 +40,12 @@
   };
 
   // функция активации карты
-  var activePage = function (elem) {
+  var activePage = function (elements) {
     blockMap.classList.remove('map--faded');
-    blockAdForm.classList.remove('ad-form--disabled');
-    // удаляем атрибуты disabled
-    disabledForm('remove');
+    form.classList.remove('ad-form--disabled');
     // Заполняем блок map элементами
-    for (var i = 0; i < elem.length; i++) {
-      elem[i].style.display = 'block';
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.display = 'block';
     }
   };
 
@@ -55,5 +53,7 @@
     addCoordinates: addCoordinates,
     activePage: activePage,
     disabledForm: disabledForm,
+    blockMap: blockMap,
+    form: form
   };
 })();

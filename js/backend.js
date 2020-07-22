@@ -3,7 +3,7 @@
   var TIMEOUT = 100000;
   var Url = {
     LOAD: 'https://javascript.pages.academy/keksobooking/data',
-    SAVE: 'https://javascript.pages.academy/keksobooking'
+    UPLOAD: 'https://javascript.pages.academy/keksobooking'
   };
   var StatusCode = {
     OK: 200
@@ -44,12 +44,12 @@
     createXhr(onLoad, onError, Method.GET, Url.LOAD);
   };
 
-  var save = function (data, onLoad, onError) {
-    createXhr(onLoad, onError, Method.POST, Url.SAVE, data);
+  var upload = function (data, onLoad, onError) {
+    createXhr(onLoad, onError, Method.POST, Url.UPLOAD, data);
   };
 
   window.backend = {
     load: load,
-    save: save
+    upload: upload
   };
 })();
