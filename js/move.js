@@ -1,49 +1,72 @@
 'use strict';
 (function () {
   // Находим элементты для активации
+
+  var MAIN_PIN_W = 65;
+  var map = document.querySelector('.map');
   var buttonPinMain = document.querySelector('.map__pin--main');
+
+  var limitOfMap = {
+    top: 130,
+    right: map.offsetWidth - MAIN_PIN_W / 2,
+    bottom: 630,
+    left: 0 - MAIN_PIN_W / 2
+  };
+
+  var setСoords = function (x, y) {
+    buttonPinMain.style.left = x + 'px';
+    buttonPinMain.style.top = y + 'px';
+  };
 
   // Перетаскивание
   buttonPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
+    // стартовые координаты
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
 
-    var dragged = false;
-
+    // перемещение курсора (событие)
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      dragged = true;
+
+      // считаем разницу (передвижение курсора по сетке)
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
       };
+
+      // переписываем стартовые координаты
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      buttonPinMain.style.top = (buttonPinMain.offsetTop - shift.y) + 'px';
-      buttonPinMain.style.left = (buttonPinMain.offsetLeft - shift.x) + 'px';
+
+      // перезаписываем стили
+      var mainPinX = buttonPinMain.offsetLeft - shift.x;
+      var mainPinY = buttonPinMain.offsetTop - shift.y;
+
+      if (mainPinX < limitOfMap.left) {
+        setСoords(limitOfMap.left, mainPinY);
+      } else if (mainPinX > limitOfMap.right) {
+        setСoords(limitOfMap.right, mainPinY);
+      } else if (mainPinY < limitOfMap.top) {
+        setСoords(mainPinX, limitOfMap.top);
+      } else if (mainPinY > limitOfMap.bottom) {
+        setСoords(mainPinX, limitOfMap.bottom);
+      } else {
+        setСoords(mainPinX, mainPinY);
+      }
     };
 
+    // отпускание кнопки мыши(событие)
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      // обновляем координаты метки
-      window.map.addCoordinates();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-
-      if (dragged) {
-        var onClickPreventDefault = function (clickEvt) {
-          clickEvt.preventDefault();
-          buttonPinMain.removeEventListener('click', onClickPreventDefault);
-        };
-        buttonPinMain.addEventListener('click', onClickPreventDefault);
-      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
