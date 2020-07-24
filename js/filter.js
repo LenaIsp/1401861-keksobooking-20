@@ -22,8 +22,6 @@
   var housingGuests = filterForm.querySelector('#housing-guests');
   var housingFeatures = filterForm.querySelector('#housing-features');
 
-  var pins = [];
-
   var getIsAnyType = function (value) {
     return value === 'any';
   };
@@ -69,7 +67,7 @@
       return item.offer.features.includes(element.value);
     });
   };
-  
+
   var filterPins = function (pins) {
     var filterItems = pins.filter(function (pin) {
       return filtrationByType(pin) && filtrationByPrice(pin) && filtrationByRooms(pin) && filtrationByGuests(pin) && filtrationByFeatures(pin);
