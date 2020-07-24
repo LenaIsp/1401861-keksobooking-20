@@ -48,12 +48,62 @@
       elements[i].style.display = 'block';
     }
   };
+  // функция закрытия карточек
+  var allClosedCard = function () {
+    // элементы для закрытия и открытия карточек
+    var buttonThumbnails = document.querySelectorAll('.map__pin');
+    var cardThumbnails = document.querySelectorAll('.map__card');
+    var popupClose = document.querySelectorAll('.popup__close');
+
+    // активация карты
+    activePage(buttonThumbnails);
+
+    // закрытие карточки при нажатии Escape
+    var onPopupEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        for (var j = 0; j < cardThumbnails.length; j++) {
+          cardThumbnails[j].style.display = 'none';
+        }
+      }
+    };
+
+    // открытие карточки при нажатии на метку
+    var openCard = function (button, cards) {
+      button.addEventListener('click', function () {
+        for (var i = 0; i < cardThumbnails.length; i++) {
+          cardThumbnails[i].style.display = 'none';
+        }
+        cards.style.display = 'block';
+        // вызываем функцию закрытие при клике по клавише Esc
+        document.addEventListener('keydown', onPopupEscPress);
+      });
+    };
+
+    // закрытие карточки при нажатии на "крестик"
+    var closeCard = function (buttonClose, cardClose) {
+      buttonClose.addEventListener('click', function () {
+        cardClose.style.display = 'none';
+        // удаление обработчика Esc
+        document.removeEventListener('keydown', onPopupEscPress);
+      });
+    };
+
+    for (var i = 1; i < buttonThumbnails.length; i++) {
+      openCard(buttonThumbnails[i], cardThumbnails[i - 1]);
+    }
+
+    for (var j = 0; j < popupClose.length; j++) {
+      closeCard(popupClose[j], cardThumbnails[j]);
+    }
+  };
 
   window.map = {
     addCoordinates: addCoordinates,
     activePage: activePage,
     disabledForm: disabledForm,
     blockMap: blockMap,
-    form: form
+    form: form,
+    allClosedCard: allClosedCard
   };
 })();

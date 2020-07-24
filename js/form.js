@@ -5,6 +5,22 @@
   var roomsInputElement = userForm.querySelector('select[name="rooms"]');
   var timeinInputElement = userForm.querySelector('select[name="timein"]');
   var timeoutInputElement = userForm.querySelector('select[name="timeout"]');
+  var offerType = userForm.querySelector('select[name="type"]');
+  var offerPrice = userForm.querySelector('input[name="price"]');
+
+  var TYPES = {
+    PALACE: 'palace',
+    FLAT: 'flat',
+    HOUSE: 'house',
+    BUNGALO: 'bungalo'
+  };
+
+  var PriceNight = {
+    ZERO: '0',
+    ONE_THOUSAND: '1000',
+    FIVE_THOUSAND: '5000',
+    TEN_THOUSAND: '10000'
+  };
 
   // проставляем disabled элемепнтам которые указаны в массиве
   var setDisabledValue = function (elements, values) {
@@ -59,11 +75,38 @@
     }
   };
 
+
+  // Функция для обновления плейсхолдера и нижней границы стоимости проживания
+  var updatePriceLmit = function () {
+    var housingTypeValue = offerType.value;
+    switch (housingTypeValue) {
+      case TYPES.BUNGALO:
+        offerPrice.placeholder = PriceNight.ZERO;
+        offerPrice.min = PriceNight.ZERO;
+        break;
+      case TYPES.FLAT:
+        offerPrice.placeholder = PriceNight.ONE_THOUSAND;
+        offerPrice.min = PriceNight.ONE_THOUSAND;
+        break;
+      case TYPES.HOUSE:
+        offerPrice.placeholder = PriceNight.FIVE_THOUSAND;
+        offerPrice.min = PriceNight.FIVE_THOUSAND;
+        break;
+      case TYPES.PALACE:
+        offerPrice.placeholder = PriceNight.TEN_THOUSAND;
+        offerPrice.min = PriceNight.TEN_THOUSAND;
+        break;
+      default: break;
+    }
+  };
+
   timeinInputElement.addEventListener('change', function () {
     changeTime(timeinInputElement, timeoutInputElement);
   });
-
   timeoutInputElement.addEventListener('change', function () {
     changeTime(timeoutInputElement, timeinInputElement);
+  });
+  offerType.addEventListener('change', function () {
+    updatePriceLmit();
   });
 })();
