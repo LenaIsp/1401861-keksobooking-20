@@ -13,7 +13,7 @@
     left: 0 - MAIN_PIN_W / 2
   };
 
-  var setСoords = function (x, y) {
+  var setCoords = function (x, y) {
     buttonPinMain.style.left = x + 'px';
     buttonPinMain.style.top = y + 'px';
   };
@@ -49,15 +49,15 @@
       var mainPinY = buttonPinMain.offsetTop - shift.y;
 
       if (mainPinX < limitOfMap.left) {
-        setСoords(limitOfMap.left, mainPinY);
+        setCoords(limitOfMap.left, mainPinY);
       } else if (mainPinX > limitOfMap.right) {
-        setСoords(limitOfMap.right, mainPinY);
+        setCoords(limitOfMap.right, mainPinY);
       } else if (mainPinY < limitOfMap.top) {
-        setСoords(mainPinX, limitOfMap.top);
+        setCoords(mainPinX, limitOfMap.top);
       } else if (mainPinY > limitOfMap.bottom) {
-        setСoords(mainPinX, limitOfMap.bottom);
+        setCoords(mainPinX, limitOfMap.bottom);
       } else {
-        setСoords(mainPinX, mainPinY);
+        setCoords(mainPinX, mainPinY);
       }
     };
 

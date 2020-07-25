@@ -22,8 +22,6 @@
   var housingGuests = filterForm.querySelector('#housing-guests');
   var housingFeatures = filterForm.querySelector('#housing-features');
 
-  var pins = [];
-
   var getIsAnyType = function (value) {
     return value === 'any';
   };
@@ -70,14 +68,7 @@
     });
   };
 
-  // функция для сохранения исходного массива меток, она вызывается один раз при загрузке данных
-  var updatePins = function (items) {
-    pins = items;
-    filterPins();
-  };
-
-
-  var filterPins = function () {
+  var filterPins = function (pins) {
     var filterItems = pins.filter(function (pin) {
       return filtrationByType(pin) && filtrationByPrice(pin) && filtrationByRooms(pin) && filtrationByGuests(pin) && filtrationByFeatures(pin);
     });
@@ -97,11 +88,9 @@
     }
   };
 
-  var onFilterChange = function () {
-    clearMap();
-    window.backend.load(updatePins);
+  window.filter = {
+    filterPins: filterPins,
+    clearMap: clearMap
   };
-
-  filterForm.addEventListener('change', onFilterChange);
 
 })();

@@ -8,6 +8,19 @@
   var offerType = userForm.querySelector('select[name="type"]');
   var offerPrice = userForm.querySelector('input[name="price"]');
 
+  var rooms = {
+    ONE: '1',
+    TWO: '2',
+    THREE: '3',
+    HUNDRED: '100'
+  };
+
+  var time = {
+    TWELVE: '12:00',
+    THIRTEEN: '13:00',
+    FOURTEEN: '14:00'
+  };
+
   var TYPES = {
     PALACE: 'palace',
     FLAT: 'flat',
@@ -34,42 +47,36 @@
     var capacityInputSelect = userForm.querySelectorAll('select[name="capacity"] option');
     var roomsInputValue = roomsInputElement.value;
     switch (roomsInputValue) {
-      case '1':
+      case rooms.ONE:
         setDisabledValue(capacityInputSelect, ['0', '2', '3']);
         capacityInputSelect[2].selected = true;
         break;
-      case '2':
+      case rooms.TWO:
         setDisabledValue(capacityInputSelect, ['0', '3']);
         capacityInputSelect[1].selected = true;
         break;
-      case '3':
+      case rooms.THREE:
         setDisabledValue(capacityInputSelect, ['0']);
         capacityInputSelect[2].selected = true;
         break;
-      case '100':
+      case rooms.HUNDRED:
         setDisabledValue(capacityInputSelect, ['1', '2', '3']);
         capacityInputSelect[3].selected = true;
         break;
     }
   };
-
-  // Изменение элементов в инпуте "количество комнат" при нажатии
-  roomsInputElement.addEventListener('change', function () {
-    calculateRoomsAndCapacity();
-  });
-
   // Изменение элементов в инпуте "Время заезда и выезда" при нажатии
   var changeTime = function (timein, timeout) {
     var valueElement = timein.value;
     var timeOption = timeout.querySelectorAll('option');
     switch (valueElement) {
-      case '12:00':
+      case time.TWELVE:
         timeOption[0].selected = true;
         break;
-      case '13:00':
+      case time.THIRTEEN:
         timeOption[1].selected = true;
         break;
-      case '14:00':
+      case time.FOURTEEN:
         timeOption[2].selected = true;
         break;
     }
@@ -99,6 +106,11 @@
       default: break;
     }
   };
+
+  // Изменение элементов в инпуте "количество комнат" при нажатии
+  roomsInputElement.addEventListener('change', function () {
+    calculateRoomsAndCapacity();
+  });
 
   timeinInputElement.addEventListener('change', function () {
     changeTime(timeinInputElement, timeoutInputElement);

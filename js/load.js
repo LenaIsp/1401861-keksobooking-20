@@ -2,6 +2,16 @@
 (function () {
   // Функция для обработки при получении данных с сервера
   var successHandler = function (data) {
+    // для фильтров
+    var filterForm = document.querySelector('.map__filters');
+
+    var onFilterChange = function () {
+      window.filter.clearMap();
+      window.filter.filterPins(data);
+    };
+
+    filterForm.addEventListener('change', onFilterChange);
+
     window.elements.createMapPins(data);
     window.map.allClosedCard();
   };

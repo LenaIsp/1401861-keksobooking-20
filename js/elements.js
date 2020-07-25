@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   // элементы
+  var MAX_PINS = 5;
   var map = document.querySelectorAll('.map__pins');
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var card = document.querySelector('.map__filters-container');
@@ -9,8 +10,8 @@
 
   var createMapPins = function (number) {
     var numberElements = number.length;
-    if (numberElements > 5) {
-      numberElements = 5;
+    if (numberElements > MAX_PINS) {
+      numberElements = MAX_PINS;
     } else {
       numberElements = number.length;
     }
