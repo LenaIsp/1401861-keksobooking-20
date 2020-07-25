@@ -111,7 +111,6 @@
   roomsInputElement.addEventListener('change', function () {
     calculateRoomsAndCapacity();
   });
-
   timeinInputElement.addEventListener('change', function () {
     changeTime(timeinInputElement, timeoutInputElement);
   });
@@ -121,4 +120,5 @@
   offerType.addEventListener('change', function () {
     updatePriceLmit();
   });
+
 })();

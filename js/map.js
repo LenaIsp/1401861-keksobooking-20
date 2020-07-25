@@ -64,6 +64,7 @@
         evt.preventDefault();
         for (var j = 0; j < cardThumbnails.length; j++) {
           cardThumbnails[j].style.display = 'none';
+          buttonThumbnails[j+1].classList.remove('map__pin--active');
         }
       }
     };
@@ -75,15 +76,17 @@
           cardThumbnails[i].style.display = 'none';
         }
         cards.style.display = 'block';
+        button.classList.add('map__pin--active');
         // вызываем функцию закрытие при клике по клавише Esc
         document.addEventListener('keydown', onPopupEscPress);
       });
     };
 
     // закрытие карточки при нажатии на "крестик"
-    var closeCard = function (buttonClose, cardClose) {
+    var closeCard = function (buttonClose, cardClose, mapActive) {
       buttonClose.addEventListener('click', function () {
         cardClose.style.display = 'none';
+        mapActive.classList.remove('map__pin--active');
         // удаление обработчика Esc
         document.removeEventListener('keydown', onPopupEscPress);
       });
@@ -94,7 +97,7 @@
     }
 
     for (var j = 0; j < popupClose.length; j++) {
-      closeCard(popupClose[j], cardThumbnails[j]);
+      closeCard(popupClose[j], cardThumbnails[j], buttonThumbnails[j+1]);
     }
   };
 

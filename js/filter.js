@@ -32,12 +32,12 @@
   };
 
   // фильтруем по типу жилья
-  var filtrationByType = function (item) {
+  var filterType = function (item) {
     return filterItem(housingType, item.offer, 'type');
   };
 
   // фильтруем по цене
-  var filtrationByPrice = function (item) {
+  var fiiterPrice = function (item) {
     switch (housingPrice.value) {
       case BorderPrice.LOW:
         return item.offer.price < PriceRange.LOWER;
@@ -51,17 +51,17 @@
     }
   };
   // Сортировка по кол-ву комнат
-  var filtrationByRooms = function (item) {
+  var filterRooms = function (item) {
     return filterItem(housingRooms, item.offer, 'rooms');
   };
 
   // Сортировка по кол-ву гостей
-  var filtrationByGuests = function (item) {
+  var filterGuests = function (item) {
     return filterItem(housingGuests, item.offer, 'guests');
   };
 
   // Сортировка по фичам
-  var filtrationByFeatures = function (item) {
+  var filterFeatures = function (item) {
     var checkedFeaturesItems = housingFeatures.querySelectorAll('input:checked');
     return Array.from(checkedFeaturesItems).every(function (element) {
       return item.offer.features.includes(element.value);
@@ -70,7 +70,7 @@
 
   var filterPins = function (pins) {
     var filterItems = pins.filter(function (pin) {
-      return filtrationByType(pin) && filtrationByPrice(pin) && filtrationByRooms(pin) && filtrationByGuests(pin) && filtrationByFeatures(pin);
+      return filterType(pin) && fiiterPrice(pin) && filterRooms(pin) && filterGuests(pin) && filterFeatures(pin);
     });
     var displayPins = filterItems.length > NUMBER_OF_PINS ? filterItems.slice(ZERO, NUMBER_OF_PINS) : filterItems;
     window.elements.createMapPins(displayPins);

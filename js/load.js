@@ -5,10 +5,10 @@
     // для фильтров
     var filterForm = document.querySelector('.map__filters');
 
-    var onFilterChange = function () {
+    var onFilterChange = window.debounce(function () {
       window.filter.clearMap();
       window.filter.filterPins(data);
-    };
+    });
 
     filterForm.addEventListener('change', onFilterChange);
 
