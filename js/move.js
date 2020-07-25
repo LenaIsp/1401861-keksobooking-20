@@ -64,6 +64,7 @@
     // отпускание кнопки мыши(событие)
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      window.map.addCoordinates();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
