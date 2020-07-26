@@ -64,7 +64,7 @@
         evt.preventDefault();
         for (var j = 0; j < cardThumbnails.length; j++) {
           cardThumbnails[j].style.display = 'none';
-          buttonThumbnails[j+1].classList.remove('map__pin--active');
+          buttonThumbnails[j + 1].classList.remove('map__pin--active');
         }
       }
     };
@@ -97,7 +97,7 @@
     }
 
     for (var j = 0; j < popupClose.length; j++) {
-      closeCard(popupClose[j], cardThumbnails[j], buttonThumbnails[j+1]);
+      closeCard(popupClose[j], cardThumbnails[j], buttonThumbnails[j + 1]);
     }
   };
 

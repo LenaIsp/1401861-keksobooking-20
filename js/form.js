@@ -45,14 +45,15 @@
   };
 
   var validateSend = function () {
-    var valueOffer = Number.parseInt(offerPrice.value);
-    var valuePlaceholder = Number.parseInt(offerPrice.getAttribute('placeholder'));
+    var valueOffer = Number.parseInt(offerPrice.value, 10);
+    var valuePlaceholder = Number.parseInt(offerPrice.getAttribute('placeholder'), 10);
     if ((valuePlaceholder > valueOffer) || isNaN(valueOffer)) {
       offerPrice.style.borderColor = 'red';
     } else {
       offerPrice.style.borderColor = '';
     }
   };
+
   // проставляем disabled элемепнтам которые указаны в массиве
   var setDisabledValue = function (elements, values) {
     for (var i = 0; i < elements.length; i++) {
@@ -100,8 +101,7 @@
     }
   };
 
-
-   // Функция для обновления плейсхолдера и нижней границы стоимости проживания
+  // Функция для обновления плейсхолдера и нижней границы стоимости проживания
   var updatePriceLmit = function () {
     var housingTypeValue = offerType.value;
     switch (housingTypeValue) {

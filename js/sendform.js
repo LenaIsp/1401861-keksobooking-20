@@ -35,6 +35,7 @@
     cloneSuccess.addEventListener('click', function () {
       cloneSuccess.remove();
       diactivate(pinThumbnails, cardThumbnails);
+      document.removeEventListener('keydown', onSuccessEscPress);
     });
 
     var onSuccessEscPress = function (evt) {
