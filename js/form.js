@@ -8,7 +8,6 @@
   var offerType = userForm.querySelector('select[name="type"]');
   var offerPrice = userForm.querySelector('input[name="price"]');
   var offerTitle = userForm.querySelector('input[name="title"]');
-  var offerPrice = userForm.querySelector('#price');
 
   var rooms = {
     ONE: '1',
@@ -136,8 +135,15 @@
   timeoutInputElement.addEventListener('change', function () {
     changeTime(timeoutInputElement, timeinInputElement);
   });
+  offerTitle.addEventListener('focus', function () {
+    offerTitle.style.borderColor = '';
+  });
   offerType.addEventListener('change', function () {
     updatePriceLmit();
+    offerPrice.style.borderColor = '';
+  });
+  offerPrice.addEventListener('focus', function () {
+    offerPrice.style.borderColor = '';
   });
 
   window.form = {
