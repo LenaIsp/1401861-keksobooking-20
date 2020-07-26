@@ -1,16 +1,20 @@
 'use strict';
 (function () {
   // Находим элементты для активации
-
-  var MAIN_PIN_W = 65;
-  var map = document.querySelector('.map');
+  var map = document.querySelector('.map__overlay');
   var buttonPinMain = document.querySelector('.map__pin--main');
+  var AFTERMAP = 16; // псевдоэлемент метки
+
+  var PinSetting = {
+    MAIN_PIN_W: 65,
+    MAIN_PIN_H: Math.floor(buttonPinMain.offsetHeight / 2 + AFTERMAP)
+  };
 
   var limitOfMap = {
-    top: 130,
-    right: map.offsetWidth - MAIN_PIN_W / 2,
-    bottom: 630,
-    left: 0 - MAIN_PIN_W / 2
+    top: 130 - PinSetting.MAIN_PIN_H,
+    right: map.offsetWidth - PinSetting.MAIN_PIN_W / 2,
+    bottom: 630 - PinSetting.MAIN_PIN_H,
+    left: 0 - PinSetting.MAIN_PIN_W / 2
   };
 
   var setCoords = function (x, y) {
@@ -48,10 +52,19 @@
       var mainPinX = buttonPinMain.offsetLeft - shift.x;
       var mainPinY = buttonPinMain.offsetTop - shift.y;
 
+      // условия огранечения метки
       if (mainPinX < limitOfMap.left) {
         setCoords(limitOfMap.left, mainPinY);
+        if (mainPinY > limitOfMap.bottom) {
+          setCoords(limitOfMap.left, limitOfMap.bottom);
+        }
       } else if (mainPinX > limitOfMap.right) {
         setCoords(limitOfMap.right, mainPinY);
+        if (mainPinY > limitOfMap.bottom) {
+          setCoords(limitOfMap.right, limitOfMap.bottom);
+        } else if (mainPinY < limitOfMap.top) {
+          setCoords(limitOfMap.right, limitOfMap.top);
+        }
       } else if (mainPinY < limitOfMap.top) {
         setCoords(mainPinX, limitOfMap.top);
       } else if (mainPinY > limitOfMap.bottom) {
@@ -73,5 +86,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  window.move = {
+    AFTERMAP: AFTERMAP
+  };
 
 })();

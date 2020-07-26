@@ -56,7 +56,7 @@
     offerPrice.style.borderColor = '';
     offerTitle.style.borderColor = '';
     var errorButton = cloneError.querySelector('.error__button');
-    cloneError.querySelector('.error__message').innerText = message;
+    cloneError.querySelector('.error__message').textContent = message;
     document.body.appendChild(cloneError);
     window.map.disabledForm('add');
     errorButton.addEventListener('click', function () {

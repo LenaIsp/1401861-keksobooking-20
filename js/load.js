@@ -20,7 +20,7 @@
   var errorHandler = function (message) {
     var error = document.querySelector('#error').content.querySelector('.error');
     var cloneError = error.cloneNode(true);
-    cloneError.querySelector('.error__message').innerHTML = message;
+    cloneError.querySelector('.error__message').textContent = message;
     cloneError.querySelector('.error__button').remove();
     document.body.appendChild(cloneError);
   };
