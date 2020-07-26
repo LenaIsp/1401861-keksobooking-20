@@ -1,6 +1,9 @@
 'use strict';
 (function () {
   var buttonReset = document.querySelector('.ad-form__reset');
+  var offerPrice = document.querySelector('#price');
+  var offerTitle = document.querySelector('input[name="title"]');
+
   var diactivate = function (itemPin, itemCard) {
     window.map.disabledForm('add');
     window.map.blockMap.classList.add('map--faded');
@@ -8,6 +11,8 @@
     window.map.form.classList.add('ad-form--disabled');
     window.map.form.reset();
     window.map.addCoordinates('center');
+    offerPrice.style.borderColor = '';
+    offerTitle.style.borderColor = '';
     for (var i = 1; i < itemPin.length; i++) {
       itemPin[i].remove();
     }
@@ -15,6 +20,7 @@
       itemCard[j].remove();
     }
   };
+
   // Функция отправки данных на сервер
   var submitHandler = function () {
     var success = document.querySelector('#success').content.querySelector('.success');
@@ -23,6 +29,8 @@
     var cardThumbnails = document.querySelectorAll('.map__card');
     window.map.disabledForm('add');
     document.body.appendChild(cloneSuccess);
+    offerPrice.style.borderColor = '';
+    offerTitle.style.borderColor = '';
 
     cloneSuccess.addEventListener('click', function () {
       cloneSuccess.remove();
@@ -44,6 +52,8 @@
   var submitErrorHandler = function (message) {
     var error = document.querySelector('#error').content.querySelector('.error');
     var cloneError = error.cloneNode(true);
+    offerPrice.style.borderColor = '';
+    offerTitle.style.borderColor = '';
     var errorButton = cloneError.querySelector('.error__button');
     cloneError.querySelector('.error__message').innerText = message;
     document.body.appendChild(cloneError);

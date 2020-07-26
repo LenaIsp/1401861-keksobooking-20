@@ -7,6 +7,8 @@
   var timeoutInputElement = userForm.querySelector('select[name="timeout"]');
   var offerType = userForm.querySelector('select[name="type"]');
   var offerPrice = userForm.querySelector('input[name="price"]');
+  var offerTitle = userForm.querySelector('input[name="title"]');
+  var offerPrice = userForm.querySelector('#price');
 
   var rooms = {
     ONE: '1',
@@ -35,6 +37,23 @@
     TEN_THOUSAND: '10000'
   };
 
+  var validateTitle = function () {
+    if (offerTitle.value.length < 30) {
+      offerTitle.style.borderColor = 'red';
+    } else {
+      offerTitle.style.borderColor = '';
+    }
+  };
+
+  var validateSend = function () {
+    var valueOffer = Number.parseInt(offerPrice.value);
+    var valuePlaceholder = Number.parseInt(offerPrice.getAttribute('placeholder'));
+    if ((valuePlaceholder > valueOffer) || isNaN(valueOffer)) {
+      offerPrice.style.borderColor = 'red';
+    } else {
+      offerPrice.style.borderColor = '';
+    }
+  };
   // проставляем disabled элемепнтам которые указаны в массиве
   var setDisabledValue = function (elements, values) {
     for (var i = 0; i < elements.length; i++) {
@@ -83,7 +102,7 @@
   };
 
 
-  // Функция для обновления плейсхолдера и нижней границы стоимости проживания
+   // Функция для обновления плейсхолдера и нижней границы стоимости проживания
   var updatePriceLmit = function () {
     var housingTypeValue = offerType.value;
     switch (housingTypeValue) {
@@ -120,5 +139,10 @@
   offerType.addEventListener('change', function () {
     updatePriceLmit();
   });
+
+  window.form = {
+    validateTitle: validateTitle,
+    validateSend: validateSend
+  };
 
 })();

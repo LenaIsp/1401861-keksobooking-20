@@ -21,6 +21,9 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === StatusCode.OK) {
         onLoad(xhr.response);
+      } else if (xhr.status === 400) {
+        window.form.validateTitle();
+        window.form.validateSend();
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
