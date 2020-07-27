@@ -13,6 +13,7 @@
     window.map.addCoordinates('center');
     offerPrice.style.borderColor = '';
     offerTitle.style.borderColor = '';
+
     for (var i = 1; i < itemPin.length; i++) {
       itemPin[i].remove();
     }
@@ -27,8 +28,10 @@
     var cloneSuccess = success.cloneNode(true);
     var pinThumbnails = document.querySelectorAll('.map__pin');
     var cardThumbnails = document.querySelectorAll('.map__card');
+
     window.map.disabledForm('add');
     document.body.appendChild(cloneSuccess);
+
     offerPrice.style.borderColor = '';
     offerTitle.style.borderColor = '';
 
@@ -39,6 +42,7 @@
     });
 
     var onSuccessEscPress = function (evt) {
+
       if (evt.key === 'Escape') {
         evt.preventDefault();
         cloneSuccess.remove();
@@ -46,6 +50,7 @@
         document.removeEventListener('keydown', onSuccessEscPress);
       }
     };
+
     document.addEventListener('keydown', onSuccessEscPress);
   };
 
@@ -53,9 +58,11 @@
   var submitErrorHandler = function (message) {
     var error = document.querySelector('#error').content.querySelector('.error');
     var cloneError = error.cloneNode(true);
+    var errorButton = cloneError.querySelector('.error__button');
+
     offerPrice.style.borderColor = '';
     offerTitle.style.borderColor = '';
-    var errorButton = cloneError.querySelector('.error__button');
+
     cloneError.querySelector('.error__message').textContent = message;
     document.body.appendChild(cloneError);
     window.map.disabledForm('add');
@@ -67,7 +74,9 @@
       cloneError.remove();
       window.map.disabledForm('remove');
     });
+
     var onSuccessEscPress = function (evt) {
+
       if (evt.key === 'Escape') {
         evt.preventDefault();
         cloneError.remove();
@@ -75,14 +84,17 @@
         document.removeEventListener('keydown', onSuccessEscPress);
       }
     };
+
     document.addEventListener('keydown', onSuccessEscPress);
   };
 
   // При клике на кнопку "очистить" очищается форма
   buttonReset.addEventListener('click', function (evt) {
     evt.preventDefault();
+
     var pinThumbnails = document.querySelectorAll('.map__pin');
     var cardThumbnails = document.querySelectorAll('.map__card');
+
     diactivate(pinThumbnails, cardThumbnails);
   });
 

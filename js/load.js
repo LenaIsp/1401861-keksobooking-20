@@ -13,7 +13,7 @@
     filterForm.addEventListener('change', onFilterChange);
 
     window.elements.createMapPins(data);
-    window.map.allClosedCard();
+    window.map.closeAllCards();
   };
 
   // Функция для обработки ошибки при получение данных

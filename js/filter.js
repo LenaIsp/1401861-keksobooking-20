@@ -74,7 +74,7 @@
     });
     var displayPins = filterItems.length > NUMBER_OF_PINS ? filterItems.slice(ZERO, NUMBER_OF_PINS) : filterItems;
     window.elements.createMapPins(displayPins);
-    window.map.allClosedCard();
+    window.map.closeAllCards();
   };
 
   var clearMap = function () {

@@ -34,7 +34,7 @@
     if (maps === 'center') {
       elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth / 2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight / 2));
     } else {
-      elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth / 2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight / 2 + window.move.AFTERMAP));
+      elementsAddress.value = Math.floor((buttonPinMain.offsetLeft + buttonPinMain.offsetWidth / 2)) + ', ' + Math.floor((buttonPinMain.offsetTop + buttonPinMain.offsetHeight / 2 + window.move.PIN_TIP_SIZE));
     }
   };
 
@@ -47,8 +47,9 @@
       elements[i].style.display = 'block';
     }
   };
+
   // функция закрытия карточек
-  var allClosedCard = function () {
+  var closeAllCards = function () {
     // элементы для закрытия и открытия карточек
     var buttonThumbnails = document.querySelectorAll('.map__pin');
     var cardThumbnails = document.querySelectorAll('.map__card');
@@ -73,6 +74,7 @@
       button.addEventListener('click', function () {
         for (var i = 0; i < cardThumbnails.length; i++) {
           cardThumbnails[i].style.display = 'none';
+          buttonThumbnails[i + 1].classList.remove('map__pin--active');
         }
         cards.style.display = 'block';
         button.classList.add('map__pin--active');
@@ -106,6 +108,6 @@
     disabledForm: disabledForm,
     blockMap: blockMap,
     form: form,
-    allClosedCard: allClosedCard
+    closeAllCards: closeAllCards
   };
 })();

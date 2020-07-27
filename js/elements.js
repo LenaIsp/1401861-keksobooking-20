@@ -10,11 +10,11 @@
 
   var createMapPins = function (pins) {
     var pinsCount = pins.length;
+
     if (pinsCount > MAX_PINS) {
       pinsCount = MAX_PINS;
-    } else {
-      pinsCount = pins.length;
     }
+
     // Функция для генерации меток и карточек на карте
     for (var i = 0; i < pinsCount; i++) {
       var mapElement = pin.cloneNode(true);

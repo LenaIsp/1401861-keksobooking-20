@@ -1,20 +1,25 @@
 'use strict';
 (function () {
   // Находим элементты для активации
+  var PIN_TIP_SIZE = 16;
+  var PIN_TOP_LIMIT = 130;
+  var PIN_BOTTOM_LIMIT = 630;
+  var PIN_SIZE_DIVIDER = 2;
+  var MAP_START_POINT = 0;
+
   var map = document.querySelector('.map__overlay');
   var buttonPinMain = document.querySelector('.map__pin--main');
-  var AFTERMAP = 16; // псевдоэлемент метки
 
-  var PinSetting = {
-    MAIN_PIN_W: 65,
-    MAIN_PIN_H: Math.floor(buttonPinMain.offsetHeight / 2 + AFTERMAP)
+  var mainPinProperties = {
+    width: 65,
+    height: Math.floor(buttonPinMain.offsetHeight / PIN_SIZE_DIVIDER + PIN_TIP_SIZE)
   };
 
   var limitOfMap = {
-    top: 130 - PinSetting.MAIN_PIN_H,
-    right: map.offsetWidth - PinSetting.MAIN_PIN_W / 2,
-    bottom: 630 - PinSetting.MAIN_PIN_H,
-    left: 0 - PinSetting.MAIN_PIN_W / 2
+    top: PIN_TOP_LIMIT - mainPinProperties.height,
+    right: map.offsetWidth - mainPinProperties.width / PIN_SIZE_DIVIDER,
+    bottom: PIN_BOTTOM_LIMIT - mainPinProperties.height,
+    left: MAP_START_POINT - mainPinProperties.width / PIN_SIZE_DIVIDER
   };
 
   var setCoords = function (x, y) {
@@ -88,7 +93,7 @@
   });
 
   window.move = {
-    AFTERMAP: AFTERMAP
+    PIN_TIP_SIZE: PIN_TIP_SIZE
   };
 
 })();
