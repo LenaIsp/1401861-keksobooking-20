@@ -76,6 +76,7 @@
     cloneError.addEventListener('click', function () {
       cloneError.remove();
       window.map.disabledForm('remove');
+      document.addEventListener('keydown', onSuccessEscPress);
     });
 
     var onSuccessEscPress = function (evt) {
