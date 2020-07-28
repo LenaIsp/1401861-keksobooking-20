@@ -29,10 +29,11 @@
   // При клике на кнопку "опубликовать" отправляем данные на сервер
   buttonSubmit.addEventListener('click', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(form), window.sendform.submitHandler, window.sendform.submitErrorHandler);
+    window.form.validateSend();
   });
 
   window.main = {
-    buttonPinMain: buttonPinMain
+    buttonPinMain: buttonPinMain,
+    form: form
   };
 })();

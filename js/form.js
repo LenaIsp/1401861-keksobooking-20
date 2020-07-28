@@ -36,21 +36,34 @@
     TEN_THOUSAND: '10000'
   };
 
+  // проверяет корректность заголовка
   var validateTitle = function () {
-    if (offerTitle.value.length < 30) {
+    if (offerTitle.value.length < 30 || offerTitle.value.length >= 100) {
       offerTitle.style.borderColor = 'red';
+      return false;
     } else {
       offerTitle.style.borderColor = '';
+      return true;
     }
   };
-
-  var validateSend = function () {
+ 
+  // проверяет данные в поле "цена"
+  var validatePrice = function () {
     var valueOffer = Number.parseInt(offerPrice.value, 10);
     var valuePlaceholder = Number.parseInt(offerPrice.getAttribute('placeholder'), 10);
+
     if ((valuePlaceholder > valueOffer) || isNaN(valueOffer)) {
       offerPrice.style.borderColor = 'red';
     } else {
       offerPrice.style.borderColor = '';
+      return true;
+    }
+  };
+
+  // сравнивает верные ли данные введены и отправляет форму на сервер
+  var validateSend = function () {
+    if (validatePrice() == validateTitle()) {
+      window.backend.upload(new FormData(window.main.form), window.sendform.submitHandler, window.sendform.submitErrorHandler);
     }
   };
 
@@ -147,7 +160,6 @@
   });
 
   window.form = {
-    validateTitle: validateTitle,
     validateSend: validateSend
   };
 

@@ -10,7 +10,9 @@
     window.main.buttonPinMain.setAttribute('style', 'left: 570px; top: 375px;');
     window.map.form.classList.add('ad-form--disabled');
     window.map.form.reset();
+    window.filter.form.reset();
     window.map.addCoordinates('center');
+
     offerPrice.style.borderColor = '';
     offerTitle.style.borderColor = '';
 

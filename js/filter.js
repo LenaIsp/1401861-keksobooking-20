@@ -15,12 +15,12 @@
   };
 
   // элементы для фильтрации
-  var filterForm = document.querySelector('.map__filters');
-  var housingType = filterForm.querySelector('#housing-type');
-  var housingPrice = filterForm.querySelector('#housing-price');
-  var housingRooms = filterForm.querySelector('#housing-rooms');
-  var housingGuests = filterForm.querySelector('#housing-guests');
-  var housingFeatures = filterForm.querySelector('#housing-features');
+  var form = document.querySelector('.map__filters');
+  var housingType = form.querySelector('#housing-type');
+  var housingPrice = form.querySelector('#housing-price');
+  var housingRooms = form.querySelector('#housing-rooms');
+  var housingGuests = form.querySelector('#housing-guests');
+  var housingFeatures = form.querySelector('#housing-features');
 
   var getIsAnyType = function (value) {
     return value === 'any';
@@ -90,7 +90,8 @@
 
   window.filter = {
     filterPins: filterPins,
-    clearMap: clearMap
+    clearMap: clearMap,
+    form: form
   };
 
 })();

@@ -6,8 +6,7 @@
     UPLOAD: 'https://javascript.pages.academy/keksobooking'
   };
   var StatusCode = {
-    OK: 200,
-    BAD_REQUEST: 400
+    OK: 200
   };
   var Method = {
     GET: 'GET',
@@ -22,9 +21,6 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === StatusCode.OK) {
         onLoad(xhr.response);
-      } else if (xhr.status === StatusCode.BAD_REQUEST) {
-        window.form.validateTitle();
-        window.form.validateSend();
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

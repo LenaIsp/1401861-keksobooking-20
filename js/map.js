@@ -4,7 +4,6 @@
   var buttonPinMain = document.querySelector('.map__pin--main');
   var blockMap = document.querySelector('.map');
   var form = document.querySelector('.ad-form');
-
   var elementsFieldset = document.querySelectorAll('fieldset');
   var elementsSelect = document.querySelectorAll('select');
   var elementsAddress = document.querySelector('#address');
