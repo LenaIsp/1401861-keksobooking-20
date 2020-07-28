@@ -31,7 +31,8 @@
     var pinThumbnails = document.querySelectorAll('.map__pin');
     var cardThumbnails = document.querySelectorAll('.map__card');
 
-    window.map.disabledForm('add');
+    diactivate(pinThumbnails, cardThumbnails);
+
     document.body.appendChild(cloneSuccess);
 
     offerPrice.style.borderColor = '';

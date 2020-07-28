@@ -37,7 +37,7 @@
   };
 
   // проверяет корректность заголовка
-  var validateTitle = function () {
+  var isTitleValid = function () {
     if (offerTitle.value.length < 30 || offerTitle.value.length >= 100) {
       offerTitle.style.borderColor = 'red';
       return false;
@@ -46,23 +46,27 @@
       return true;
     }
   };
- 
+
   // проверяет данные в поле "цена"
-  var validatePrice = function () {
+  var isPriceValid = function () {
     var valueOffer = Number.parseInt(offerPrice.value, 10);
     var valuePlaceholder = Number.parseInt(offerPrice.getAttribute('placeholder'), 10);
 
     if ((valuePlaceholder > valueOffer) || isNaN(valueOffer)) {
       offerPrice.style.borderColor = 'red';
+      return false;
     } else {
       offerPrice.style.borderColor = '';
       return true;
     }
   };
 
-  // сравнивает верные ли данные введены и отправляет форму на сервер
+  // сравнивает верные ли данные введены и отправляет форму
   var validateSend = function () {
-    if (validatePrice() == validateTitle()) {
+    // переменные нужны для гарантированной проверки двух полей
+    var isTitle = isTitleValid();
+    var isPrice = isPriceValid();
+    if (isTitle && isPrice) {
       window.backend.upload(new FormData(window.main.form), window.sendform.submitHandler, window.sendform.submitErrorHandler);
     }
   };
